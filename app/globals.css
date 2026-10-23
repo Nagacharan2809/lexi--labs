@@ -1,0 +1,346 @@
+@import "tailwindcss";
+
+@theme {
+  /* Type */
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-fragment), ui-monospace, "SFMono-Regular", monospace;
+
+  /* Neutral ramp — paper carries the site, ink carries the message */
+  --color-paper: #fafaf7;
+  --color-paper-2: #f3f3ee;
+  --color-paper-3: #ecece6;
+  --color-ink: #101114;
+  --color-ink-2: #2e3138;
+  --color-grey: #66696f;
+  --color-grey-2: #9a9da2;
+  --color-line: #e5e5de;
+  --color-line-2: #d7d7cf;
+
+  /* Spectral accents — derived from the hero field */
+  --color-blue: #2b5aa7;
+  --color-blue-deep: #1d4790;
+  --color-orange: #e8763a;
+  --color-orange-deep: #d95f2b;
+
+  /* spectral tints — soft washes for section surfaces */
+  --color-blue-tint: #e9eef7;
+  --color-sky: #7ea6d8;
+  --color-ember: #f0a05a;
+  --color-orange-tint: #faeadf;
+
+  /* Motion */
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.4, 0.44, 1);
+
+  /* Depth */
+  --shadow-soft: 0 1px 2px rgb(16 17 20 / 0.04), 0 10px 32px rgb(16 17 20 / 0.06);
+  --shadow-lift: 0 2px 6px rgb(16 17 20 / 0.05), 0 18px 48px rgb(16 17 20 / 0.09);
+
+  /* Radius family: hairline squared, surfaces moderate */
+  --radius-xs: 2px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+/* ---------------------------------- base ---------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--color-blue);
+  color: #fafaf7;
+}
+
+:focus-visible {
+  outline: 2px solid #101114;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* fine static grain — editorial paper texture, painted once */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* --------------------------------- helpers -------------------------------- */
+
+@layer components {
+  /* shared gutter */
+  .gutter {
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .gutter {
+      padding-inline: 2.5rem;
+    }
+  }
+  @media (min-width: 1280px) {
+    .gutter {
+      padding-inline: 4rem;
+    }
+  }
+
+  /* mono metadata label */
+  .meta {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* expanded editorial display lines */
+  .display {
+    font-variation-settings: "wdth" 116;
+    font-weight: 640;
+    letter-spacing: -0.015em;
+    line-height: 0.94;
+  }
+
+  /* modest display for section headers */
+  .display-md {
+    font-variation-settings: "wdth" 108;
+    font-weight: 620;
+    letter-spacing: -0.02em;
+    line-height: 0.98;
+  }
+
+  .link-underline {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+    transition: text-decoration-color 0.2s var(--ease-brand);
+  }
+  .link-underline:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+/* -------------------------------- keyframes ------------------------------- */
+
+/* live status pulse */
+@keyframes lexi-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+/* infinite ticker — the track holds two copies, slides by half */
+@keyframes lexi-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* slow-moving gradient wash for rings and hairlines */
+@keyframes lexi-slide {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 300% 50%;
+  }
+}
+
+/* marching dashes along a connector */
+@keyframes lexi-dash {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+/* cursor blink */
+@keyframes lexi-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  95% {
+    opacity: 0;
+  }
+}
+
+/* slow vertical drift */
+@keyframes lexi-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@layer components {
+  .chip-live {
+    position: relative;
+    display: inline-flex;
+    height: 0.5rem;
+    width: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+  .chip-live::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: currentColor;
+    opacity: 0.55;
+    animation: lexi-pulse 2.4s var(--ease-brand) infinite;
+  }
+
+  /* spectral gradient, clipped to the glyphs */
+  .grad-spectral {
+    background-image: linear-gradient(
+      100deg,
+      #2b5aa7 0%,
+      #7ea6d8 30%,
+      #e8763a 78%,
+      #d95f2b 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* complete gradient hairline */
+  .grad-rule {
+    background: linear-gradient(90deg, #2b5aa7, #7ea6d8 40%, #f0a05a 66%, #e8763a);
+  }
+
+  /* animation hairline — the gradient slowly drifts */
+  .grad-rule-live {
+    background: linear-gradient(
+      90deg,
+      #2b5aa7,
+      #7ea6d8 30%,
+      #f0a05a 60%,
+      #e8763a,
+      #2b5aa7
+    );
+    background-size: 300% 100%;
+    animation: lexi-slide 9s linear infinite;
+  }
+
+  /* infinite ticker */
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(
+      90deg,
+      transparent,
+      #000 6%,
+      #000 94%,
+      transparent
+    );
+    mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: lexi-marquee var(--marquee-speed, 32s) linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* form underlines: confirm focus with a spectral sweep */
+  .field {
+    background-image: linear-gradient(90deg, #2b5aa7, #7ea6d8 55%, #e8763a);
+    background-position: 0 calc(100% - 1px);
+    background-size: 0% 1.5px;
+    background-repeat: no-repeat;
+    transition:
+      background-size 0.5s var(--ease-brand),
+      border-color 0.25s ease;
+  }
+  .field:focus {
+    background-size: 100% 1.5px;
+    border-color: color-mix(in srgb, var(--color-blue) 55%, transparent);
+  }
+
+  /* footer links: a spectral dot slides in */
+  .foot-link {
+    position: relative;
+    padding-left: 0;
+    transition:
+      color 0.25s var(--ease-brand),
+      padding-left 0.25s var(--ease-brand);
+  }
+  .foot-link::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    border-radius: 9999px;
+    transform: translateY(-46%) scale(0.4);
+    opacity: 0;
+    background: linear-gradient(120deg, #2b5aa7, #e8763a);
+    transition:
+      opacity 0.25s var(--ease-brand),
+      transform 0.25s var(--ease-bounce);
+  }
+  .foot-link:hover {
+    padding-left: 14px;
+  }
+  .foot-link:hover::before {
+    opacity: 1;
+    transform: translateY(-46%) scale(1);
+  }
+
+  /* white type set on the luminous edges of the spectral field */
+  .edge-readable {
+    text-shadow:
+      0 1px 2px rgb(12 24 44 / 0.4),
+      0 0 18px rgb(12 24 44 / 0.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
