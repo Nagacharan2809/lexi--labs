@@ -170,7 +170,7 @@ export function SiteNavigation() {
           {/* right actions */}
           <div className="hidden items-center gap-2 lg:flex">
             <a
-              href="/signin"
+              href="/sign-in"
               className={cn(
                 "meta rounded-xs px-3 py-2 transition-colors",
                 overHero ? "text-white/70 hover:text-white" : "text-grey hover:text-ink",
@@ -266,7 +266,7 @@ export function SiteNavigation() {
                 >
                   BOOK A DEMO
                 </button>
-                <a href="/signin" className="meta py-3 text-center text-grey">
+                <a href="/sign-in" className="meta py-3 text-center text-grey">
                   SIGN IN
                 </a>
               </motion.div>

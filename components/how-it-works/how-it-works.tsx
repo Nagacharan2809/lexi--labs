@@ -94,8 +94,8 @@ export function HowItWorks() {
 
   useEffect(() => {
     if (prefersReducedMotion()) {
-      setReached(FLOW_NODES.length - 1);
-      return;
+      const id = window.setTimeout(() => setReached(FLOW_NODES.length - 1), 0);
+      return () => window.clearTimeout(id);
     }
     const path = pathRef.current;
     const pulse = pulseRef.current;

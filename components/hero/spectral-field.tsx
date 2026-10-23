@@ -237,7 +237,7 @@ export default function SpectralFieldBackground({
 
     let width = 1;
     let height = 1;
-    let stillMode = reduced;
+    const stillMode = reduced;
     const resize = () => {
       const rect = wrap.getBoundingClientRect();
       width = Math.max(1, Math.round(rect.width * dpr));

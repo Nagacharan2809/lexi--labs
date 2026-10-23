@@ -224,16 +224,21 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
 
           <div className="flex flex-wrap gap-3">
             {mode === "signin" ? (
-              <Button href="/" arrow>
-                Back to lexilabs.ai
-              </Button>
+              <>
+                <Button href="/app/overview" arrow>
+                  Open the workforce console
+                </Button>
+                <Button href="/" variant="ghost">
+                  Back to lexilabs.ai
+                </Button>
+              </>
             ) : (
               <>
-                <Button href="/#employees" arrow>
-                  Meet the workforce
+                <Button href="/verify-email" arrow>
+                  Verify email to continue
                 </Button>
-                <Button href="/#contact" variant="ghost">
-                  Book a demo
+                <Button href="/create-workspace" variant="ghost">
+                  Create workspace
                 </Button>
               </>
             )}
@@ -347,14 +352,14 @@ export function AuthForm({ mode }: { mode: AuthMode }) {
             {mode === "signin" ? (
               <>
                 New to Lexi Labs?{" "}
-                <Link href="/signup" className="link-underline text-ink transition-colors hover:text-orange-deep">
+                <Link href="/sign-up" className="link-underline text-ink transition-colors hover:text-orange-deep">
                   Create an account
                 </Link>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <Link href="/signin" className="link-underline text-ink transition-colors hover:text-orange-deep">
+                <Link href="/sign-in" className="link-underline text-ink transition-colors hover:text-orange-deep">
                   Sign in
                 </Link>
               </>

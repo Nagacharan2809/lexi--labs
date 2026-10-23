@@ -1,11 +1,27 @@
 import Link from "next/link";
 import SpectralFieldBackground from "@/components/hero/spectral-field";
-import { AuthForm, AuthMode } from "@/components/auth/auth-form";
+import { AuthForm } from "@/components/auth/auth-form";
+import { ForgotForm, InviteForm, ResetForm, VerifyEmailForm, WorkspaceForm } from "@/components/auth/auth-v2";
 
-const COPY: Record<
-  AuthMode,
-  { headline: string; sub: string; kicker: string; heading: string; lead: string; mobile: string }
-> = {
+export type AuthScreenMode =
+  | "signin"
+  | "signup"
+  | "verify"
+  | "forgot"
+  | "reset"
+  | "invite"
+  | "workspace";
+
+interface ModeCopy {
+  headline: string;
+  sub: string;
+  kicker: string;
+  heading: string;
+  lead: string;
+  mobile: string;
+}
+
+const COPY: Record<AuthScreenMode, ModeCopy> = {
   signin: {
     headline: "Your workforce never clocked out.",
     sub: "Nine AI employees, one Fleen runtime. Sign in to review what they got done — every call, every workflow, logged and ready.",
@@ -22,6 +38,46 @@ const COPY: Record<
     lead: "Your workforce assembles here.",
     mobile: "Start hiring.",
   },
+  verify: {
+    headline: "Proof of person, one code.",
+    sub: "Email verification keeps the audit chain attached to real humans — every signed action on the floor traces to one.",
+    kicker: "Verify email — Lexi Labs",
+    heading: "Verify your email.",
+    lead: "Six digits and the floor is yours.",
+    mobile: "One code.",
+  },
+  forgot: {
+    headline: "Nothing lost, everything keyed.",
+    sub: "Reset links are single-use and expire fast — the same discipline the runtime applies to credentials.",
+    kicker: "Reset password — Lexi Labs",
+    heading: "Forgot password.",
+    lead: "A key, not a puzzle. We emailed a link.",
+    mobile: "Reset.",
+  },
+  reset: {
+    headline: "New key, new session.",
+    sub: "Every prior session revokes on change. The ledger remembers, the sessions don't.",
+    kicker: "New password — Lexi Labs",
+    heading: "Set a new password.",
+    lead: "Stronger than the last one — your employees work with sharp tools, so should your account.",
+    mobile: "New key.",
+  },
+  invite: {
+    headline: "The humans go first.",
+    sub: "You were invited to a live workforce — approvals, escalations and supervision run on real names, signed and audited.",
+    kicker: "Accept invite — Lexi Labs",
+    heading: "Accept your invite.",
+    lead: "Join the floor. Your scopes are already waiting.",
+    mobile: "You're invited.",
+  },
+  workspace: {
+    headline: "One workspace, many employees.",
+    sub: "Name the org your employees will serve — region, currency and metering follow. The first hire comes next.",
+    kicker: "Create workspace — Lexi Labs",
+    heading: "Name your workspace.",
+    lead: "Where your employees will live.",
+    mobile: "One floor.",
+  },
 };
 
 const LIVE_ROLES = ["Sales", "Support", "Operations"] as const;
@@ -32,7 +88,15 @@ const LIVE_ROLES = ["Sales", "Support", "Operations"] as const;
  * column is a quiet paper sheet for the form. Server component; the
  * form itself is a client island.
  */
-export function AuthScreen({ mode }: { mode: AuthMode }) {
+export function AuthScreen({
+  mode,
+  email = "aarav@novarealty.in",
+  workspace = "Nova Realty",
+}: {
+  mode: AuthScreenMode;
+  email?: string;
+  workspace?: string;
+}) {
   const copy = COPY[mode];
 
   return (
@@ -133,7 +197,21 @@ export function AuthScreen({ mode }: { mode: AuthMode }) {
             </p>
           </div>
 
-          <AuthForm mode={mode} />
+          {mode === "signin" ? (
+            <AuthForm mode="signin" />
+          ) : mode === "signup" ? (
+            <AuthForm mode="signup" />
+          ) : mode === "verify" ? (
+            <VerifyEmailForm email={email} />
+          ) : mode === "forgot" ? (
+            <ForgotForm />
+          ) : mode === "reset" ? (
+            <ResetForm />
+          ) : mode === "workspace" ? (
+            <WorkspaceForm />
+          ) : (
+            <InviteForm email={email} workspace={workspace} />
+          )}
         </div>
       </div>
     </main>

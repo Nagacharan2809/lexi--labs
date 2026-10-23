@@ -43,14 +43,14 @@ export function AboutSection() {
         <header>
           <Reveal>
             <h2 className="display-md text-[clamp(2.5rem,6vw,5.25rem)] uppercase text-ink">
-              We're building
+              We&apos;re building
               <br />
               the AI workforce.
             </h2>
           </Reveal>
           <Reveal delay={0.08}>
             <p className="mt-6 max-w-[52ch] text-[1.05rem] leading-relaxed text-ink-2">
-              A company is only its people. We're adding the ones that never
+              A company is only its people. We&apos;re adding the ones that never
               sleep — AI employees that handle the operational work, connected
               to the systems a business already runs on.
             </p>
